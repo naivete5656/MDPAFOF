@@ -7,19 +7,12 @@ This is an official pytorch implementation of [Mitosis Detection from Partial An
 ## Main Results
 ### Results on 4 datasets
 
-## 1-shot setting
-|Method                |HeLa  |ES    |ES-D  |FIb   |Ave.  |
-|----------------------|------|------|------|------|------|
-|                      |      |      |      |      |      |
-|                      |      |      |      |      |      |
-| **Ours**             | 95.9 |  90.3|  86.4| 89.1 | 87.1 |
-
-## 5-shot setting
-|Method                |HeLa  |ES    |ES-D  |FIb   |Ave.  |
-|----------------------|------|------|------|------|------|
-|                      |      |      |      |      |      |
-|                      |      |      |      |      |      |
-| **Ours**             | 95.9 |  90.3|  86.4| 89.1 | 87.1|
+|Method         |   L    |HeLa  |ES    |ES-D  |FIb   |Ave.  |
+|---------------|-------|------|------|------|------|------|
+| Ours |1 annot.| 0.593|0.740|0.439|0.440|0.553|
+| Ours |5 annot.| 0.795|  0.843|  0.628| 0.451 | 0.610 |
+| Ours  |F|0.841|  **0.870**|  **0.648**| **0.541**| **0.725** |
+| Supervised | F| **0.868**|  0.812|  0.630| 0.304 | 0.653|
 
 
 # Environments
@@ -44,7 +37,8 @@ bash ./docker/run.sh
 ## Data preparation
 
 [Celltracking challenge](http://celltrackingchallenge.net/2d-datasets/)
-Please download training data and test data of "HeLa cells stably expressing H2b-GFP". Extract them under {ROOT_PATH}/original_data. Please rename test data file as Fluo-N2Dl-HeLa_test.
+
+Please download training data and test data of "HeLa cells stably expressing H2b-GFP". Extract them under {ROOT_PATH}/original_data. Please rename test data file as Fluo-N2Dl-HeLa_test. Please run preprocessing code. The code normalize image based on max and mix value of whole seqence.
 
 ```bash
 python ./pre_processing/ctc_preprocess.py --root_paht {ROOT_PATH}
@@ -73,15 +67,16 @@ ${ROOT_PATH}
             L   02
         
 ```
+For the few-shot experiments and the missing experiments, please use sampling code in pre_processing folder.
 
 ## Training and Testing
 
-Training and test script for 4-fold cross validation on 5 seed conditions
+Training and test script for 4-fold cross validation on 5 seed conditions (Our experiments)
 ```
 bash ./scripts/croos_train.sh
 ```
 
-Train on one cond.
+Train on one condition.
 ```
 python ./scripts/cross_train.py --img_dir ./datas/ctc_preprocessed/Fluo-N2DL-HeLa\
         --cv_num 0 --seed 0 --shot 5\
